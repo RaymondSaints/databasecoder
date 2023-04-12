@@ -1,9 +1,5 @@
 const fs = require('fs');
-/* const express = require('express');
-const PUERTO = 8080;
-const APP = express();
-APP.use(express.urlencoded({extended:true})); 
- */
+ 
 
 
 
