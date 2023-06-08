@@ -1,9 +1,10 @@
 const fs = require('fs');
+//import { promises as fs } from "fs";
  
 
 
 
-class ProductManager {
+/*export default*/ class ProductManager {
     constructor () {
         this.products = [];
         this.UnId = 0;
@@ -46,7 +47,7 @@ class ProductManager {
         try {
             const data = await fs.promises.readFile(this.path, 'utf-8');
             const products = JSON.parse(data);
-            console.log(products);
+            //console.log(products);
             return products;
         } catch (error) {
             console.log(error);
@@ -59,7 +60,7 @@ class ProductManager {
         const productsById = JSON.parse(data);
         const product = productsById.find(product => product.id === productId);
         if (product) {
-            console.log(product);
+            //console.log(product);
             return product; // Retorna el objeto
         } else {
             console.log(`product:${productId} not found - information cannot be displayed`);
@@ -108,11 +109,13 @@ class ProductManager {
 const manager = new ProductManager();
 
 
-//manager.addProduct("TV", "TV LG 24 pulgadas", 22654, "img1.jpg", "A01", 25);
-//manager.addProduct("TV", "TV SHARK 55 pulgadas", 22654, "img12.jpg", "A12", 12);
-//manager.addProduct("TV", "TV SAMSUNG 75 pulgadas", 150000, "img26.jpg", "A20", 103);
-//manager.addProduct("Tableta", "Sansumg 1TB almacenamiento", 70000, "img2.jpg", "A48", 12);
-//manager.addProduct("Celular", "Samsung Galaxi", 65000, "img3.jpg", "A99", 40);
+/* manager.addProduct("TV", "TV LG 24 pulgadas", 22654, "img1.jpg", "A01", 25);
+manager.addProduct("TV", "TV SHARK 55 pulgadas", 22654, "img12.jpg", "A12", 12);
+manager.addProduct("TV", "TV SAMSUNG 75 pulgadas", 150000, "img26.jpg", "A20", 103);
+manager.addProduct("Tableta", "Sansumg 1TB almacenamiento", 70000, "img2.jpg", "A48", 12);
+manager.addProduct("Relog", "Samsung Galaxi", 65000, "img3.jpg", "A99", 40);
+manager.addProduct("Celular", "Samsung Watch", 8000, "img55.jpg", "D95", 40);
+manager.addProduct("Celular", "Samsung Galaxi", 65000, "img3.jpg", "S5599", 40); */
 //console.log(manager.getProducts());
 
 

@@ -1,75 +1,45 @@
 const express = require('express');
 const ProductManager = require('./ProductManager.js')
+//import express from "express";
+//import ProductManager from "./ProductManager";
 
 const PUERTO = 8080;
 const app = express();
+const server = app.listen(PUERTO,()=>console.log(`SERVER RUN IN ${PUERTO}`));
+
+
 
 app.use(express.urlencoded({extended:true}))
-app.use(express.json())
-       
+
+
+const products = new ProductManager();
+const readProducts = products.getProducts();
 
 
 app.get('/', async (req, res)=>{//INDEX PAGE
     res.send("WELCOME TO MAIN PAGE")
 
-})
+});
 
-app.get('/productsBy/:id', async (req, res) => {//find to id
-    const productManager = new ProductManager
-    const id = req.params.id
+//solicitamos productos
+app.get("/products", async (req,res)=>{
+    let limit = parseInt(req.query.limit);//CAPTURAMOS EL LIMITE
 
-     try {
-        await productManager
-        const product = await productManager.getProductById(id)
-        
+    if(!limit) return res.send(await readProducts);//PREGUNTAMOS SI HAY LIMITE
+    //console.log(limit)
+    const allProducts = await readProducts;
+    const productLimit = allProducts.slice(0, limit)
+    return res.send(productLimit);
+});
 
-        if (!product) {
-            res.send(`ID NOT FOUND:${id}`)
-        } else {
-            return res.send(product)
-        }
-
-    } catch (error) {
-        res.send(error)
-    } 
-})
-
+app.get(app.get("/products/:id", async (req,res)=>{//capturamos el id por params
+    let id = parseInt(req.params.id);
+    const allProducts = await readProducts;
+    console.log(id)
+    let productsById = allProducts.find(products => products.id === id )
+    res.send(productsById)
+}))
 
 
 
-app.get('/products', async (req, res) => {//ALL PRODUCTS or YOUR NUMBERS OF PRODUCTS
-    const cant = req.query.cant; //query
-    const productManager = new ProductManager()
-
-    try {
-        await productManager
-        let products = await productManager.getProducts()
-        console.log(products)
-        if (cant) {
-            products = products.slice(0, parseInt(cant))
-            res.send(products)
-            
-        }
-        
-        res.json(products)
-    } catch (error) {
-        res.send(error)
-    }
-})
-
-
-
-
-//upload a user
-app.post('/usersup', async (req, res)=>{
-    res.send(`work in progress`)
-    
-    
-})
-//---------
-
-
-
-app.listen(PUERTO, () => {
-    console.log(`Server runing in port:${PUERTO}`)
-})
+server.on("error", (error)=>console.log(`error del servidor ${error}`));
